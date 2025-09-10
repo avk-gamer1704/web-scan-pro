@@ -1,21 +1,7 @@
-python
 import time
-import warnings
-import argparse
-import requests
-from urllib.parse import urlparse, urlencode, parse_qs, urlunparse, urljoin, urldefrag, quote_plus
-from bs4 import BeautifulSoup
-import json
 import re
-
-# Handle import of NotOpenSSLWarning with compatibility for different urllib3 versions
-try:
-    from urllib3.exceptions import NotOpenSSLWarning
-    warnings.filterwarnings('ignore', category=NotOpenSSLWarning)
-except ImportError:
-    # Fallback: ignore if NotOpenSSLWarning is not available
-    warnings.filterwarnings('ignore', module='urllib3')
-    pass
+from urllib.parse import urlparse, urlencode, parse_qs, urlunparse, urljoin
+import requests
 
 # Enhanced XSS payloads for different types of attacks
 XSS_PAYLOADS = {
@@ -72,7 +58,7 @@ COMMON_API_ENDPOINTS = [
 class XSSTester:
     """Enhanced XSS testing class with DOM-based and stored XSS capabilities."""
     def __init__(self, session=None, timeout=10):
-        self.session = session or get_session()
+        self.session = session or requests.Session()
         self.timeout = timeout
         self.findings = []
         self.stored_payloads = {}  # Track payloads for stored XSS verification
